@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<setting>
+  <bingarchive><![CDATA[http://www.bing.com/HPImageArchive.aspx?format=xml&idx={0}&n=1&nc=1397809837851&pid=hp]]></bingarchive>
+  <beforedate><![CDATA[0]]></beforedate>
+  <replace><![CDATA[True]]></replace>
+  <savepath><![CDATA[E:\OneDrive\WallPaper]]></savepath>
+  <resolution><![CDATA[1920x1080]]> </resolution>
+</setting>
