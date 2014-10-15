@@ -40,7 +40,15 @@ namespace BingWallpaper
                 baseUrl = string.Format("http://www.bing.com{0}_{1}.jpg", baseUrl, resolution);
                 WebClient client = new WebClient();
                 Console.WriteLine("正在下载{0}天前的Bing壁纸...", i);
-                byte[] data = client.DownloadData(baseUrl);
+                byte[] data = null;
+                try
+                {
+                    data = client.DownloadData(baseUrl);
+                }
+                catch
+                {
+                    data = client.DownloadData("http://www.bing.com" + xmlDoc.SelectSingleNode("images/image/url").InnerText.Trim());
+                }
                 while (!replace && File.Exists(save))
                 {
                     Console.WriteLine("已存在文件：" + save);
