@@ -27,16 +27,22 @@ namespace BingWallpaper
             var bingarchive = xmlSetDoc.SelectSingleNode("setting/bingarchive").InnerText.Trim();
             var resolution = xmlSetDoc.SelectSingleNode("setting/resolution").InnerText.Trim();
             var savepath = xmlSetDoc.SelectSingleNode("setting/savepath").InnerText.Trim();
-            var replace = Convert.ToBoolean(xmlSetDoc.SelectSingleNode("setting/replace").InnerText.Trim());
-            var beforedate = Convert.ToInt32(xmlSetDoc.SelectSingleNode("setting/beforedate").InnerText.Trim());
-            for (int i = 0; i <= beforedate; i++)
+            //var replace = Convert.ToBoolean(xmlSetDoc.SelectSingleNode("setting/replace").InnerText.Trim());
+            //var beforedate = Convert.ToInt32(xmlSetDoc.SelectSingleNode("setting/beforedate").InnerText.Trim());
+            for (int i = 0; ; i++)
             {
-                var xmlDoc = new XmlDocument();
+                var xmlDoc = new XmlDocument(); 
+                Console.WriteLine("获取{0}天前壁纸信息...", i);
                 xmlDoc.Load(string.Format(bingarchive, i));
                 string baseUrl = xmlDoc.SelectSingleNode("images/image/urlBase").InnerText.Trim();
-                string enddate = xmlDoc.SelectSingleNode("images/image/enddate").InnerText.Trim();
-                string save = string.Format("{0}\\{1}.jpg", savepath, enddate);
+                //string enddate = xmlDoc.SelectSingleNode("images/image/enddate").InnerText.Trim();
+                DateTime date = DateTime.Now.AddDays(- i);
+                string save = string.Format("{0}\\{1}.jpg", savepath, date.ToString("yyyyMMdd"));
 
+                if (File.Exists(save))
+                {
+                    break;
+                }
                 baseUrl = string.Format("http://www.bing.com{0}_{1}.jpg", baseUrl, resolution);
                 WebClient client = new WebClient();
                 Console.WriteLine("正在下载{0}天前的Bing壁纸...", i);
@@ -49,13 +55,6 @@ namespace BingWallpaper
                 {
                     data = client.DownloadData("http://www.bing.com" + xmlDoc.SelectSingleNode("images/image/url").InnerText.Trim());
                 }
-                while (!replace && File.Exists(save))
-                {
-                    Console.WriteLine("已存在文件：" + save);
-                    Console.WriteLine("---请先处理---");
-                    Console.WriteLine("处理完成?按任意键继续...");
-                    Console.ReadKey();
-                }
                 using (var ms = new MemoryStream(data))
                 {
                     Bitmap img = new Bitmap(ms);
@@ -63,7 +62,7 @@ namespace BingWallpaper
                     img.Dispose();
                 }
             }
-
+            Console.WriteLine("壁纸下载完成...");
             //Console.WriteLine("设置壁纸...");
             //SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, savepath, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
         }
