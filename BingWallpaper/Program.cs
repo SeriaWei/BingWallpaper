@@ -29,14 +29,14 @@ namespace BingWallpaper
             var savepath = xmlSetDoc.SelectSingleNode("setting/savepath").InnerText.Trim();
             //var replace = Convert.ToBoolean(xmlSetDoc.SelectSingleNode("setting/replace").InnerText.Trim());
             //var beforedate = Convert.ToInt32(xmlSetDoc.SelectSingleNode("setting/beforedate").InnerText.Trim());
-            for (int i = 0; ; i++)
+            for (int i = 0; i < 8; i++)
             {
-                var xmlDoc = new XmlDocument(); 
+                var xmlDoc = new XmlDocument();
                 Console.WriteLine("获取{0}天前壁纸信息...", i);
                 xmlDoc.Load(string.Format(bingarchive, i));
                 string baseUrl = xmlDoc.SelectSingleNode("images/image/urlBase").InnerText.Trim();
                 //string enddate = xmlDoc.SelectSingleNode("images/image/enddate").InnerText.Trim();
-                DateTime date = DateTime.Now.AddDays(- i);
+                DateTime date = DateTime.Now.AddDays(-i);
                 string save = string.Format("{0}\\{1}.jpg", savepath, date.ToString("yyyyMMdd"));
 
                 if (File.Exists(save))
